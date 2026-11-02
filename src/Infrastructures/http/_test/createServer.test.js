@@ -28,9 +28,87 @@ describe('HTTP server', () => {
       const response = await request(server).post('/users').send(requestPayload);
  
       // Assert
-      expect(response.status).toEqual(201);      
+      expect(response.status).toEqual(201);
       expect(response.body.status).toEqual('success');
       expect(response.body.data.addedUser).toBeDefined();
+    });
+ 
+    it('should response 400 when request payload not contain needed property', async () => {
+      // Arrange
+      const requestPayload = {
+        fullname: 'Mamang Racing',
+        password: 'secret',
+      };
+      const server = await createServer(container);
+      // Action
+      const response = await request(server).post('/users').send(requestPayload);
+      // Assert
+      expect(response.status).toEqual(400);
+      expect(response.body.status).toEqual('fail');
+      expect(response.body.message).toEqual('tidak dapat membuat user baru karena properti yang dibutuhkan tidak ada');
+    });
+    it('should response 400 when request payload not meet data type specification', async () => {
+      // Arrange
+      const requestPayload = {
+        username: 'fathony',
+        password: 'secret',
+        fullname: ['Mamang Racing'],
+      };
+      const server = await createServer(container);
+      // Action
+      const response = await request(server).post('/users').send(requestPayload);
+      // Assert
+      expect(response.status).toEqual(400);
+      expect(response.body.status).toEqual('fail');
+      expect(response.body.message).toEqual('tidak dapat membuat user baru karena tipe data tidak sesuai');
+    });
+    it('should response 400 when username more than 50 character', async () => {
+      // Arrange
+      const requestPayload = {
+        username: 'fathonyindonesiafathonyindonesiafathonyindonesiafathony',
+        password: 'secret',
+        fullname: 'Mamang Racing',
+      };
+      const server = await createServer(container);
+      // Action
+      const response = await request(server).post('/users').send(requestPayload);
+      // Assert
+      expect(response.status).toEqual(400);
+      expect(response.body.status).toEqual('fail');
+      expect(response.body.message).toEqual('tidak dapat membuat user baru karena karakter username melebihi batas limit');
+    });
+    it('should response 400 when username contain restricted character', async () => {
+      // Arrange
+      const requestPayload = {
+        username: 'fathony ss',
+        password: 'secret',
+        fullname: 'Mamang Racing',
+      };
+      const server = await createServer(container);
+      // Action
+      const response = await request(server).post('/users').send(requestPayload);
+      // Assert
+      expect(response.status).toEqual(400);
+      expect(response.body.status).toEqual('fail');
+      expect(response.body.message).toEqual('tidak dapat membuat user baru karena username mengandung karakter terlarang');
+    });
+    it('should response 400 when username unavailable', async () => {
+      // Arrange
+      await UsersTableTestHelper.addUser({ username: 'fathony' });
+      const requestPayload = {
+        username: 'fathony',
+        fullname: 'Mamang Racing',
+        password: 'super_secret',
+      };
+      const server = await createServer(container);
+      // Action
+      const response = await request(server)
+       .post('/users')
+       .send(requestPayload);
+      // Assert
+      expect(response.status).toEqual(400);
+      expect(response.body.status).toEqual('fail');
+      expect(response.body.message).toEqual('username tidak tersedia');
     });
   });
 });
