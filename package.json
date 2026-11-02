@@ -7,7 +7,7 @@
     "start": "node src/app.js",
     "start:dev": "nodemon src/app.js",
     "test": "vitest --run",
-    "test:watch": "vitest --watch",
+    "test:watch": "vitest --watch --coverage",
     "migrate": "node-pg-migrate",
     "migrate:test": "node-pg-migrate --envPath .test.env"
   },
@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@vitest/coverage-v8": "^5.0.5",
     "eslint": "^10.14.0",
     "globals": "^17.14.0",
     "node-pg-migrate": "^9.0.0",
