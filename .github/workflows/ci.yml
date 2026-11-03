@@ -1,26 +1,25 @@
 name: Continuous Integration
-
+ 
 on: 
   pull_request:
     branches:
       - master
-
+ 
 jobs:
   test:
     runs-on: ubuntu-latest
-    
+
     strategy:
       matrix:
-        node-version: ['v26.13.0']
+        node-version: ['24.21.0']
 
     services:
       postgres:
         image: postgres
         env:
-         POSTGRES_USER: ${{ POSTGRES_USER }}
-         POSTGRES_PASSWORD: ${{ POSTGRES_PASSWORD }}
-         POSTGRES_DB: ${{ POSTGRES_DB }}
-         
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -30,25 +29,28 @@ jobs:
           - 5432:5432
  
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: npm install migrate and test
-      run: |
-        npm ci
-        npm run migrate up
-        npm run test
-      env:
-        CI: true
-        HOST: ${{ SECRET.HOST }}
-        PORT: ${{ SECRET.PGPORT }}
-        PGHOST: ${{ SECRET.PGHOST }}
-        PGPORT: ${{ SECRET.PGPORT }}
-        PGUSER: ${{ SECRET.PGUSER }}
-        PGPASSWORD: ${{ SECRET.PGPASSWORD }}
-        PGDATABASE: ${{ SECRET.PGDATABASE }}
-        ACCESS_TOKEN_KEY: secret
-        REFRESH_TOKEN_KEY: terces
-        ACCESS_TOKEN_AGE: 3600
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: npm install migrate and test
+        run: |
+          npm ci
+          npm run migrate up
+          npm run test
+        env:
+          CI: true
+          HOST: ${{ secrets.HOST }}
+          PORT: ${{ secrets.PGPORT }}
+          PGHOST: ${{ secrets.PGHOST }}
+          PGPORT: ${{ secrets.PGPORT }}
+          PGUSER: ${{ secrets.PGUSER }}
+          PGPASSWORD: ${{ secrets.PGPASSWORD }}
+          PGDATABASE: ${{ secrets.PGDATABASE }}
+          ACCESS_TOKEN_KEY: secret
+          REFRESH_TOKEN_KEY: terces
+          ACCESS_TOKEN_AGE: 3600
