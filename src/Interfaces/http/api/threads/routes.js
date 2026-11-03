@@ -5,6 +5,7 @@ const routes = (controller) => {
   const router = express.Router();
 
   router.post('/', authenticate, controller.postThread);
+  router.get('/:threadId', controller.getThreadDetail);
 
   return router;
 };

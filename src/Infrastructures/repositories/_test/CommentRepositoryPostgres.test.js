@@ -166,4 +166,63 @@ describe('CommentRepositoryPostgres', () => {
       expect(comments[0].is_delete).toEqual(true);
     });
   });
+
+  describe('getCommentsByThreadId function', () => {
+    it('should return comments sorted by created_at ascending', async () => {
+      // Arrange
+      const firstDate = new Date('2021-08-08T07:22:33.555Z');
+      const secondDate = new Date('2021-08-08T07:26:21.338Z');
+      await UsersTableTestHelper.addUser({ id: 'user-123', username: 'johndoe' });
+      await UsersTableTestHelper.addUser({ id: 'user-456', username: 'dicoding' });
+      await ThreadsTableTestHelper.addThread({ id: 'thread-123', owner: 'user-123' });
+      await CommentsTableTestHelper.addComment({
+        id: 'comment-456',
+        content: 'komentar kedua',
+        owner: 'user-456',
+        threadId: 'thread-123',
+        isDelete: true,
+        createdAt: secondDate,
+      });
+      await CommentsTableTestHelper.addComment({
+        id: 'comment-123',
+        content: 'komentar pertama',
+        owner: 'user-123',
+        threadId: 'thread-123',
+        createdAt: firstDate,
+      });
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, () => '123');
+
+      // Action
+      const comments = await commentRepositoryPostgres.getCommentsByThreadId('thread-123');
+
+      // Assert
+      expect(comments).toStrictEqual([
+        {
+          id: 'comment-123',
+          username: 'johndoe',
+          date: firstDate,
+          content: 'komentar pertama',
+          is_delete: false,
+        },
+        {
+          id: 'comment-456',
+          username: 'dicoding',
+          date: secondDate,
+          content: 'komentar kedua',
+          is_delete: true,
+        },
+      ]);
+    });
+
+    it('should return empty array when thread has no comment', async () => {
+      // Arrange
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, () => '123');
+
+      // Action
+      const comments = await commentRepositoryPostgres.getCommentsByThreadId('thread-123');
+
+      // Assert
+      expect(comments).toStrictEqual([]);
+    });
+  });
 });
