@@ -74,7 +74,7 @@ describe('ReplyRepositoryPostgres', () => {
       // Arrange
       const firstDate = new Date('2021-08-08T07:59:48.766Z');
       const secondDate = new Date('2021-08-08T08:07:01.522Z');
-      await UsersTableTestHelper.addUser({ id: 'user-123', username: 'dicoding' });
+      await UsersTableTestHelper.addUser({ id: 'user-123', username: 'fathony' });
       await UsersTableTestHelper.addUser({ id: 'user-456', username: 'johndoe' });
       await ThreadsTableTestHelper.addThread({ id: 'thread-123', owner: 'user-123' });
       await ThreadsTableTestHelper.addThread({ id: 'thread-456', owner: 'user-123' });
@@ -122,7 +122,7 @@ describe('ReplyRepositoryPostgres', () => {
           content: 'balasan kedua',
           is_delete: false,
           date: secondDate,
-          username: 'dicoding',
+          username: 'fathony',
         },
       ]);
     });

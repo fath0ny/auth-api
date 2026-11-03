@@ -22,8 +22,8 @@ describe('/threads endpoint', () => {
   });
 
   const getAccessToken = async () => {
-    await UsersTableTestHelper.addUser({ id: 'user-123', username: 'dicoding' });
-    return jwt.sign({ id: 'user-123', username: 'dicoding' }, process.env.ACCESS_TOKEN_KEY);
+    await UsersTableTestHelper.addUser({ id: 'user-123', username: 'fathony' });
+    return jwt.sign({ id: 'user-123', username: 'fathony' }, process.env.ACCESS_TOKEN_KEY);
   };
 
   describe('when POST /threads', () => {
@@ -117,7 +117,7 @@ describe('/threads endpoint', () => {
       const secondCommentDate = new Date('2021-08-08T07:26:21.338Z');
       const firstReplyDate = new Date('2021-08-08T07:59:48.766Z');
       const secondReplyDate = new Date('2021-08-08T08:07:01.522Z');
-      await UsersTableTestHelper.addUser({ id: 'user-123', username: 'dicoding' });
+      await UsersTableTestHelper.addUser({ id: 'user-123', username: 'fathony' });
       await UsersTableTestHelper.addUser({ id: 'user-456', username: 'johndoe' });
       await ThreadsTableTestHelper.addThread({
         id: 'thread-123',
@@ -172,7 +172,7 @@ describe('/threads endpoint', () => {
             title: 'sebuah thread',
             body: 'sebuah body thread',
             date: threadDate.toISOString(),
-            username: 'dicoding',
+            username: 'fathony',
             comments: [
               {
                 id: 'comment-123',
@@ -190,13 +190,13 @@ describe('/threads endpoint', () => {
                     id: 'reply-456',
                     content: 'sebuah balasan',
                     date: secondReplyDate.toISOString(),
-                    username: 'dicoding',
+                    username: 'fathony',
                   },
                 ],
               },
               {
                 id: 'comment-456',
-                username: 'dicoding',
+                username: 'fathony',
                 date: secondCommentDate.toISOString(),
                 content: '**komentar telah dihapus**',
                 replies: [],
@@ -209,7 +209,7 @@ describe('/threads endpoint', () => {
 
     it('should response 200 and return empty comments when thread has no comment', async () => {
       // Arrange
-      await UsersTableTestHelper.addUser({ id: 'user-123', username: 'dicoding' });
+      await UsersTableTestHelper.addUser({ id: 'user-123', username: 'fathony' });
       await ThreadsTableTestHelper.addThread({ id: 'thread-123', owner: 'user-123' });
       const server = await createServer(container);
 

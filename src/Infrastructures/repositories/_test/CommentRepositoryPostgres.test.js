@@ -173,7 +173,7 @@ describe('CommentRepositoryPostgres', () => {
       const firstDate = new Date('2021-08-08T07:22:33.555Z');
       const secondDate = new Date('2021-08-08T07:26:21.338Z');
       await UsersTableTestHelper.addUser({ id: 'user-123', username: 'johndoe' });
-      await UsersTableTestHelper.addUser({ id: 'user-456', username: 'dicoding' });
+      await UsersTableTestHelper.addUser({ id: 'user-456', username: 'fathony' });
       await ThreadsTableTestHelper.addThread({ id: 'thread-123', owner: 'user-123' });
       await CommentsTableTestHelper.addComment({
         id: 'comment-456',
@@ -206,7 +206,7 @@ describe('CommentRepositoryPostgres', () => {
         },
         {
           id: 'comment-456',
-          username: 'dicoding',
+          username: 'fathony',
           date: secondDate,
           content: 'komentar kedua',
           is_delete: true,

@@ -19,7 +19,7 @@ describe('GetThreadDetailUseCase', () => {
       title: 'sebuah thread',
       body: 'sebuah body thread',
       date: threadDate,
-      username: 'dicoding',
+      username: 'fathony',
     };
     const mockComments = [
       {
@@ -31,7 +31,7 @@ describe('GetThreadDetailUseCase', () => {
       },
       {
         id: 'comment-456',
-        username: 'dicoding',
+        username: 'fathony',
         date: secondCommentDate,
         content: 'komentar yang dihapus',
         is_delete: true,
@@ -49,7 +49,7 @@ describe('GetThreadDetailUseCase', () => {
       {
         id: 'reply-456',
         comment_id: 'comment-123',
-        username: 'dicoding',
+        username: 'fathony',
         date: secondReplyDate,
         content: 'sebuah balasan',
         is_delete: false,
@@ -102,13 +102,13 @@ describe('GetThreadDetailUseCase', () => {
               id: 'reply-456',
               content: 'sebuah balasan',
               date: secondReplyDate,
-              username: 'dicoding',
+              username: 'fathony',
             },
           ],
         },
         {
           id: 'comment-456',
-          username: 'dicoding',
+          username: 'fathony',
           date: secondCommentDate,
           content: '**komentar telah dihapus**',
           replies: [],

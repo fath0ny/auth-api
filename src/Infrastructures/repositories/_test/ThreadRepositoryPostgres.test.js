@@ -88,7 +88,7 @@ describe('ThreadRepositoryPostgres', () => {
       const createdAt = new Date('2021-08-08T07:19:09.775Z');
       await UsersTableTestHelper.addUser({
         id: 'user-123',
-        username: 'dicoding',
+        username: 'fathony',
       });
       await ThreadsTableTestHelper.addThread({
         id: 'thread-123',
@@ -108,7 +108,7 @@ describe('ThreadRepositoryPostgres', () => {
         title: 'sebuah thread',
         body: 'sebuah body thread',
         date: createdAt,
-        username: 'dicoding',
+        username: 'fathony',
       });
     });
 

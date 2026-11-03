@@ -30,7 +30,7 @@ describe('UserRepositoryPostgres', () => {
       const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
  
       // Action & Assert
-      await expect(userRepositoryPostgres.verifyAvailableUsername('dicoding')).resolves.not.toThrowError(InvariantError);
+      await expect(userRepositoryPostgres.verifyAvailableUsername('fathony')).resolves.not.toThrowError(InvariantError);
     });
   });
  

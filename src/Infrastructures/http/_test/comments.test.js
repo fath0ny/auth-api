@@ -19,7 +19,7 @@ describe('/threads/{threadId}/comments endpoint', () => {
     await UsersTableTestHelper.cleanTable();
   });
 
-  const getAccessToken = async ({ id = 'user-123', username = 'dicoding' } = {}) => {
+  const getAccessToken = async ({ id = 'user-123', username = 'fathony' } = {}) => {
     await UsersTableTestHelper.addUser({ id, username });
     return jwt.sign({ id, username }, process.env.ACCESS_TOKEN_KEY);
   };
