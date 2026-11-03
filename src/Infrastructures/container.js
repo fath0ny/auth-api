@@ -13,11 +13,14 @@ import UserRepositoryPostgres from './repositories/UserRepositoryPostgres.js';
 import BcryptPasswordHash from './security/BcryptPasswordHash.js';
 import ThreadRepository from '../Domains/threads/ThreadRepository.js';
 import ThreadRepositoryPostgres from './repositories/ThreadRepositoryPostgres.js';
+import CommentRepository from '../Domains/comments/CommentRepository.js';
+import CommentRepositoryPostgres from './repositories/CommentRepositoryPostgres.js';
  
 // use case
 import AddUserUseCase from '../Applications/use_case/AddUserUseCase.js';
 import PasswordHash from '../Applications/security/PasswordHash.js';
 import AddThreadUseCase from '../Applications/use_case/AddThreadUseCase.js';
+import AddCommentUseCase from '../Applications/use_case/AddCommentUseCase.js';
  
 // creating container
 const container = createContainer();
@@ -63,6 +66,20 @@ container.register([
       ],
     },
   },
+  {
+    key: CommentRepository.name,
+    Class: CommentRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+        {
+          concrete: nanoid,
+        },
+      ],
+    },
+  },
 ]);
  
 // registering use cases
@@ -90,6 +107,23 @@ container.register([
     parameter: {
       injectType: 'destructuring',
       dependencies: [
+        {
+          name: 'threadRepository',
+          internal: ThreadRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: AddCommentUseCase.name,
+    Class: AddCommentUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'commentRepository',
+          internal: CommentRepository.name,
+        },
         {
           name: 'threadRepository',
           internal: ThreadRepository.name,

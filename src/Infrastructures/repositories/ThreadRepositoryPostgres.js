@@ -1,5 +1,6 @@
 import AddedThread from '../../Domains/threads/entities/AddedThread.js';
 import ThreadRepository from '../../Domains/threads/ThreadRepository.js';
+import NotFoundError from '../../Commons/exceptions/NotFoundError.js';
 
 class ThreadRepositoryPostgres extends ThreadRepository {
   constructor(pool, idGenerator) {
@@ -20,6 +21,19 @@ class ThreadRepositoryPostgres extends ThreadRepository {
     const result = await this._pool.query(query);
 
     return new AddedThread({ ...result.rows[0] });
+  }
+
+  async verifyThreadExists(id) {
+    const query = {
+      text: 'SELECT id FROM threads WHERE id = $1',
+      values: [id],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError('thread tidak ditemukan');
+    }
   }
 }
 

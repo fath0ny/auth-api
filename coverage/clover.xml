@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1793674450449" clover="3.2.0">
-  <project timestamp="1793674450449" name="All files">
-    <metrics statements="144" coveredstatements="141" conditionals="58" coveredconditionals="58" methods="39" coveredmethods="38" elements="241" coveredelements="237" complexity="0" loc="144" ncloc="144" packages="13" files="25" classes="25"/>
+<coverage generated="1793675855280" clover="3.2.0">
+  <project timestamp="1793675855280" name="All files">
+    <metrics statements="200" coveredstatements="197" conditionals="80" coveredconditionals="80" methods="54" coveredmethods="53" elements="334" coveredelements="330" complexity="0" loc="200" ncloc="200" packages="16" files="33" classes="33"/>
     <package name="Applications.security">
       <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
       <file name="PasswordHash.js" path="/home/arieffathony/DICODING/backend-expert/auth-api/src/Applications/security/PasswordHash.js">
@@ -10,7 +10,16 @@
       </file>
     </package>
     <package name="Applications.use_case">
-      <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
+      <metrics statements="15" coveredstatements="15" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="6"/>
+      <file name="AddCommentUseCase.js" path="/home/arieffathony/DICODING/backend-expert/auth-api/src/Applications/use_case/AddCommentUseCase.js">
+        <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+        <line num="5" count="2" type="stmt"/>
+        <line num="6" count="2" type="stmt"/>
+        <line num="10" count="4" type="stmt"/>
+        <line num="11" count="4" type="stmt"/>
+        <line num="13" count="3" type="stmt"/>
+        <line num="14" count="3" type="stmt"/>
+      </file>
       <file name="AddThreadUseCase.js" path="/home/arieffathony/DICODING/backend-expert/auth-api/src/Applications/use_case/AddThreadUseCase.js">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
         <line num="5" count="2" type="stmt"/>
@@ -31,41 +40,76 @@
       <metrics statements="16" coveredstatements="16" conditionals="5" coveredconditionals="5" methods="5" coveredmethods="5"/>
       <file name="AuthenticationError.js" path="/home/arieffathony/DICODING/backend-expert/auth-api/src/Commons/exceptions/AuthenticationError.js">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="5" count="2" type="stmt"/>
-        <line num="6" count="2" type="stmt"/>
-        <line num="7" count="2" type="stmt"/>
+        <line num="5" count="3" type="stmt"/>
+        <line num="6" count="3" type="stmt"/>
+        <line num="7" count="3" type="stmt"/>
       </file>
       <file name="ClientError.js" path="/home/arieffathony/DICODING/backend-expert/auth-api/src/Commons/exceptions/ClientError.js">
         <metrics statements="5" coveredstatements="5" conditionals="3" coveredconditionals="3" methods="1" coveredmethods="1"/>
-        <line num="3" count="29" type="stmt"/>
-        <line num="5" count="29" type="cond" truecount="2" falsecount="0"/>
+        <line num="3" count="50" type="stmt"/>
+        <line num="5" count="50" type="cond" truecount="2" falsecount="0"/>
         <line num="6" count="1" type="stmt"/>
-        <line num="9" count="28" type="stmt"/>
-        <line num="10" count="28" type="stmt"/>
+        <line num="9" count="49" type="stmt"/>
+        <line num="10" count="49" type="stmt"/>
       </file>
       <file name="DomainErrorTranslator.js" path="/home/arieffathony/DICODING/backend-expert/auth-api/src/Commons/exceptions/DomainErrorTranslator.js">
         <metrics statements="3" coveredstatements="3" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
-        <line num="3" count="3" type="stmt"/>
-        <line num="5" count="11" type="cond" truecount="2" falsecount="0"/>
-        <line num="9" count="3" type="stmt"/>
+        <line num="3" count="4" type="stmt"/>
+        <line num="5" count="17" type="cond" truecount="2" falsecount="0"/>
+        <line num="9" count="4" type="stmt"/>
       </file>
       <file name="InvariantError.js" path="/home/arieffathony/DICODING/backend-expert/auth-api/src/Commons/exceptions/InvariantError.js">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="5" count="25" type="stmt"/>
-        <line num="6" count="25" type="stmt"/>
+        <line num="5" count="43" type="stmt"/>
+        <line num="6" count="43" type="stmt"/>
       </file>
       <file name="NotFoundError.js" path="/home/arieffathony/DICODING/backend-expert/auth-api/src/Commons/exceptions/NotFoundError.js">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="5" count="1" type="stmt"/>
-        <line num="6" count="1" type="stmt"/>
-        <line num="7" count="1" type="stmt"/>
+        <line num="5" count="3" type="stmt"/>
+        <line num="6" count="3" type="stmt"/>
+        <line num="7" count="3" type="stmt"/>
+      </file>
+    </package>
+    <package name="Domains.comments">
+      <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <file name="CommentRepository.js" path="/home/arieffathony/DICODING/backend-expert/auth-api/src/Domains/comments/CommentRepository.js">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="3" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="Domains.comments.entities">
+      <metrics statements="18" coveredstatements="18" conditionals="20" coveredconditionals="20" methods="4" coveredmethods="4"/>
+      <file name="AddedComment.js" path="/home/arieffathony/DICODING/backend-expert/auth-api/src/Domains/comments/entities/AddedComment.js">
+        <metrics statements="9" coveredstatements="9" conditionals="10" coveredconditionals="10" methods="2" coveredmethods="2"/>
+        <line num="3" count="8" type="stmt"/>
+        <line num="5" count="8" type="stmt"/>
+        <line num="7" count="8" type="stmt"/>
+        <line num="8" count="8" type="stmt"/>
+        <line num="9" count="8" type="stmt"/>
+        <line num="13" count="8" type="cond" truecount="5" falsecount="0"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="17" count="7" type="cond" truecount="5" falsecount="0"/>
+        <line num="18" count="1" type="stmt"/>
+      </file>
+      <file name="NewComment.js" path="/home/arieffathony/DICODING/backend-expert/auth-api/src/Domains/comments/entities/NewComment.js">
+        <metrics statements="9" coveredstatements="9" conditionals="10" coveredconditionals="10" methods="2" coveredmethods="2"/>
+        <line num="3" count="9" type="stmt"/>
+        <line num="5" count="9" type="stmt"/>
+        <line num="7" count="9" type="stmt"/>
+        <line num="8" count="9" type="stmt"/>
+        <line num="9" count="9" type="stmt"/>
+        <line num="13" count="9" type="cond" truecount="5" falsecount="0"/>
+        <line num="14" count="2" type="stmt"/>
+        <line num="17" count="7" type="cond" truecount="5" falsecount="0"/>
+        <line num="18" count="1" type="stmt"/>
       </file>
     </package>
     <package name="Domains.threads">
-      <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
       <file name="ThreadRepository.js" path="/home/arieffathony/DICODING/backend-expert/auth-api/src/Domains/threads/ThreadRepository.js">
-        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
         <line num="3" count="1" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
       </file>
     </package>
     <package name="Domains.threads.entities">
@@ -135,40 +179,41 @@
       </file>
     </package>
     <package name="Infrastructures.http">
-      <metrics statements="8" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="1"/>
+      <metrics statements="9" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="1"/>
       <file name="createServer.js" path="/home/arieffathony/DICODING/backend-expert/auth-api/src/Infrastructures/http/createServer.js">
-        <metrics statements="8" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="1"/>
-        <line num="5" count="2" type="stmt"/>
-        <line num="7" count="9" type="stmt"/>
-        <line num="9" count="9" type="stmt"/>
-        <line num="11" count="9" type="stmt"/>
-        <line num="12" count="9" type="stmt"/>
-        <line num="14" count="9" type="stmt"/>
-        <line num="15" count="0" type="stmt"/>
-        <line num="21" count="9" type="stmt"/>
+        <metrics statements="9" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="1"/>
+        <line num="6" count="3" type="stmt"/>
+        <line num="8" count="13" type="stmt"/>
+        <line num="10" count="13" type="stmt"/>
+        <line num="12" count="13" type="stmt"/>
+        <line num="13" count="13" type="stmt"/>
+        <line num="14" count="13" type="stmt"/>
+        <line num="16" count="13" type="stmt"/>
+        <line num="17" count="0" type="stmt"/>
+        <line num="23" count="13" type="stmt"/>
       </file>
     </package>
     <package name="Infrastructures.http.middlewares">
       <metrics statements="12" coveredstatements="10" conditionals="6" coveredconditionals="6" methods="1" coveredmethods="1"/>
       <file name="authenticate.js" path="/home/arieffathony/DICODING/backend-expert/auth-api/src/Infrastructures/http/middlewares/authenticate.js">
         <metrics statements="12" coveredstatements="10" conditionals="6" coveredconditionals="6" methods="1" coveredmethods="1"/>
-        <line num="9" count="2" type="stmt"/>
-        <line num="10" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="11" count="3" type="stmt"/>
-        <line num="13" count="3" type="cond" truecount="4" falsecount="0"/>
-        <line num="14" count="1" type="stmt"/>
-        <line num="15" count="1" type="stmt"/>
-        <line num="21" count="2" type="stmt"/>
-        <line num="22" count="2" type="stmt"/>
-        <line num="23" count="2" type="stmt"/>
-        <line num="24" count="2" type="stmt"/>
+        <line num="9" count="3" type="stmt"/>
+        <line num="10" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="11" count="7" type="stmt"/>
+        <line num="13" count="7" type="cond" truecount="4" falsecount="0"/>
+        <line num="14" count="2" type="stmt"/>
+        <line num="15" count="2" type="stmt"/>
+        <line num="21" count="5" type="stmt"/>
+        <line num="22" count="5" type="stmt"/>
+        <line num="23" count="5" type="stmt"/>
+        <line num="24" count="5" type="stmt"/>
         <line num="26" count="0" type="stmt"/>
         <line num="27" count="0" type="stmt"/>
       </file>
     </package>
     <package name="Infrastructures.repositories">
-      <metrics statements="20" coveredstatements="20" conditionals="2" coveredconditionals="2" methods="5" coveredmethods="5"/>
-      <file name="ThreadRepositoryPostgres.js" path="/home/arieffathony/DICODING/backend-expert/auth-api/src/Infrastructures/repositories/ThreadRepositoryPostgres.js">
+      <metrics statements="32" coveredstatements="32" conditionals="4" coveredconditionals="4" methods="8" coveredmethods="8"/>
+      <file name="CommentRepositoryPostgres.js" path="/home/arieffathony/DICODING/backend-expert/auth-api/src/Infrastructures/repositories/CommentRepositoryPostgres.js">
         <metrics statements="8" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
         <line num="6" count="3" type="stmt"/>
         <line num="7" count="3" type="stmt"/>
@@ -178,6 +223,21 @@
         <line num="15" count="3" type="stmt"/>
         <line num="20" count="3" type="stmt"/>
         <line num="22" count="3" type="stmt"/>
+      </file>
+      <file name="ThreadRepositoryPostgres.js" path="/home/arieffathony/DICODING/backend-expert/auth-api/src/Infrastructures/repositories/ThreadRepositoryPostgres.js">
+        <metrics statements="12" coveredstatements="12" conditionals="2" coveredconditionals="2" methods="3" coveredmethods="3"/>
+        <line num="7" count="6" type="stmt"/>
+        <line num="8" count="6" type="stmt"/>
+        <line num="9" count="6" type="stmt"/>
+        <line num="13" count="3" type="stmt"/>
+        <line num="14" count="3" type="stmt"/>
+        <line num="16" count="3" type="stmt"/>
+        <line num="21" count="3" type="stmt"/>
+        <line num="23" count="3" type="stmt"/>
+        <line num="27" count="5" type="stmt"/>
+        <line num="32" count="5" type="stmt"/>
+        <line num="34" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="35" count="2" type="stmt"/>
       </file>
       <file name="UserRepositoryPostgres.js" path="/home/arieffathony/DICODING/backend-expert/auth-api/src/Infrastructures/repositories/UserRepositoryPostgres.js">
         <metrics statements="12" coveredstatements="12" conditionals="2" coveredconditionals="2" methods="3" coveredmethods="3"/>
@@ -205,12 +265,41 @@
         <line num="11" count="2" type="stmt"/>
       </file>
     </package>
+    <package name="Interfaces.http.api.comments">
+      <metrics statements="17" coveredstatements="17" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
+      <file name="controller.js" path="/home/arieffathony/DICODING/backend-expert/auth-api/src/Interfaces/http/api/comments/controller.js">
+        <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+        <line num="6" count="13" type="stmt"/>
+        <line num="7" count="13" type="stmt"/>
+        <line num="11" count="3" type="stmt"/>
+        <line num="12" count="3" type="stmt"/>
+        <line num="13" count="3" type="stmt"/>
+        <line num="14" count="3" type="stmt"/>
+        <line num="15" count="3" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="22" count="2" type="stmt"/>
+        <line num="23" count="2" type="stmt"/>
+      </file>
+      <file name="index.js" path="/home/arieffathony/DICODING/backend-expert/auth-api/src/Interfaces/http/api/comments/index.js">
+        <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="4" count="3" type="stmt"/>
+        <line num="5" count="13" type="stmt"/>
+        <line num="7" count="13" type="stmt"/>
+      </file>
+      <file name="routes.js" path="/home/arieffathony/DICODING/backend-expert/auth-api/src/Interfaces/http/api/comments/routes.js">
+        <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="4" count="3" type="stmt"/>
+        <line num="7" count="13" type="stmt"/>
+        <line num="9" count="13" type="stmt"/>
+        <line num="11" count="13" type="stmt"/>
+      </file>
+    </package>
     <package name="Interfaces.http.api.threads">
       <metrics statements="16" coveredstatements="16" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
       <file name="controller.js" path="/home/arieffathony/DICODING/backend-expert/auth-api/src/Interfaces/http/api/threads/controller.js">
         <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
-        <line num="6" count="9" type="stmt"/>
-        <line num="7" count="9" type="stmt"/>
+        <line num="6" count="13" type="stmt"/>
+        <line num="7" count="13" type="stmt"/>
         <line num="11" count="2" type="stmt"/>
         <line num="12" count="2" type="stmt"/>
         <line num="13" count="2" type="stmt"/>
@@ -221,24 +310,24 @@
       </file>
       <file name="index.js" path="/home/arieffathony/DICODING/backend-expert/auth-api/src/Interfaces/http/api/threads/index.js">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="4" count="2" type="stmt"/>
-        <line num="5" count="9" type="stmt"/>
-        <line num="7" count="9" type="stmt"/>
+        <line num="4" count="3" type="stmt"/>
+        <line num="5" count="13" type="stmt"/>
+        <line num="7" count="13" type="stmt"/>
       </file>
       <file name="routes.js" path="/home/arieffathony/DICODING/backend-expert/auth-api/src/Interfaces/http/api/threads/routes.js">
         <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="4" count="2" type="stmt"/>
-        <line num="5" count="9" type="stmt"/>
-        <line num="7" count="9" type="stmt"/>
-        <line num="9" count="9" type="stmt"/>
+        <line num="4" count="3" type="stmt"/>
+        <line num="5" count="13" type="stmt"/>
+        <line num="7" count="13" type="stmt"/>
+        <line num="9" count="13" type="stmt"/>
       </file>
     </package>
     <package name="Interfaces.http.api.users">
       <metrics statements="15" coveredstatements="15" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
       <file name="controller.js" path="/home/arieffathony/DICODING/backend-expert/auth-api/src/Interfaces/http/api/users/controller.js">
         <metrics statements="8" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
-        <line num="6" count="9" type="stmt"/>
-        <line num="7" count="9" type="stmt"/>
+        <line num="6" count="13" type="stmt"/>
+        <line num="7" count="13" type="stmt"/>
         <line num="11" count="6" type="stmt"/>
         <line num="12" count="6" type="stmt"/>
         <line num="13" count="6" type="stmt"/>
@@ -248,16 +337,16 @@
       </file>
       <file name="index.js" path="/home/arieffathony/DICODING/backend-expert/auth-api/src/Interfaces/http/api/users/index.js">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="4" count="2" type="stmt"/>
-        <line num="5" count="9" type="stmt"/>
-        <line num="7" count="9" type="stmt"/>
+        <line num="4" count="3" type="stmt"/>
+        <line num="5" count="13" type="stmt"/>
+        <line num="7" count="13" type="stmt"/>
       </file>
       <file name="routes.js" path="/home/arieffathony/DICODING/backend-expert/auth-api/src/Interfaces/http/api/users/routes.js">
         <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="3" count="2" type="stmt"/>
-        <line num="4" count="9" type="stmt"/>
-        <line num="6" count="9" type="stmt"/>
-        <line num="8" count="9" type="stmt"/>
+        <line num="3" count="3" type="stmt"/>
+        <line num="4" count="13" type="stmt"/>
+        <line num="6" count="13" type="stmt"/>
+        <line num="8" count="13" type="stmt"/>
       </file>
     </package>
   </project>
