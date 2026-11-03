@@ -111,4 +111,21 @@ describe('HTTP server', () => {
       expect(response.body.message).toEqual('username tidak tersedia');
     });
   });
+
+  describe('when accessing unknown route', () => {
+    it('should response 404 with fail status', async () => {
+      // Arrange
+      const server = await createServer(container);
+
+      // Action
+      const response = await request(server).get('/unknown-route');
+
+      // Assert
+      expect(response.status).toEqual(404);
+      expect(response.body).toStrictEqual({
+        status: 'fail',
+        message: 'resource not found',
+      });
+    });
+  });
 });

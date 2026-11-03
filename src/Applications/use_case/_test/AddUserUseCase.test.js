@@ -2,6 +2,7 @@ import { vi, describe, expect, it } from 'vitest';
 import RegisterUser from '../../../Domains/users/entities/RegisterUser.js';
 import RegisteredUser from '../../../Domains/users/entities/RegisteredUser.js';
 import UserRepository from '../../../Domains/users/UserRepository.js';
+import InvariantError from '../../../Commons/exceptions/InvariantError.js';
 import PasswordHash from '../../security/PasswordHash.js';
 import AddUserUseCase from '../AddUserUseCase.js';
  
@@ -53,5 +54,37 @@ describe('AddUserUseCase', () => {
       password: 'encrypted_password',
       fullname: useCasePayload.fullname,
     }));
+  });
+
+  it('should not add user when username is not available', async () => {
+    // Arrange
+    const useCasePayload = {
+      username: 'fathony',
+      password: 'password',
+      fullname: 'Mamang Racing',
+    };
+
+    /** creating dependency of use case */
+    const mockUserRepository = new UserRepository();
+    const mockPasswordHash = new PasswordHash();
+
+    /** mocking needed function */
+    mockUserRepository.verifyAvailableUsername = vi.fn()
+      .mockImplementation(() => Promise.reject(new InvariantError('username tidak tersedia')));
+    mockPasswordHash.hash = vi.fn();
+    mockUserRepository.addUser = vi.fn();
+
+    /** creating use case instance */
+    const addUserUseCase = new AddUserUseCase({
+      userRepository: mockUserRepository,
+      passwordHash: mockPasswordHash,
+    });
+
+    // Action and Assert
+    await expect(addUserUseCase.execute(useCasePayload))
+      .rejects.toThrow(InvariantError);
+    expect(mockUserRepository.verifyAvailableUsername).toBeCalledWith(useCasePayload.username);
+    expect(mockPasswordHash.hash).not.toBeCalled();
+    expect(mockUserRepository.addUser).not.toBeCalled();
   });
 });

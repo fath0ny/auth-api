@@ -2,6 +2,7 @@ import express from 'express';
 import users from '../../Interfaces/http/api/users/index.js';
 import threads from '../../Interfaces/http/api/threads/index.js';
 import comments from '../../Interfaces/http/api/comments/index.js';
+import replies from '../../Interfaces/http/api/replies/index.js';
 
 const createServer = async (container) => {
 
@@ -12,6 +13,7 @@ const createServer = async (container) => {
   app.use('/users', users(container));
   app.use('/threads', threads(container));
   app.use('/threads/:threadId/comments', comments(container));
+  app.use('/threads/:threadId/comments/:commentId/replies', replies(container));
 
   app.use((req, res) => {
     res.status(404).json({

@@ -18,11 +18,11 @@ describe('UserRepositoryPostgres', () => {
   describe('verifyAvailableUsername function', () => {
     it('should throw InvariantError when username not available', async () => {
       // Arrange
-      await UsersTableTestHelper.addUser({ username: 'dicoding' }); // memasukan user baru dengan username dicoding
+      await UsersTableTestHelper.addUser({ username: 'fathony' }); // memasukan user baru dengan username fathony
       const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
- 
+
       // Action & Assert
-      await expect(userRepositoryPostgres.verifyAvailableUsername('dicoding')).rejects.toThrowError(InvariantError);
+      await expect(userRepositoryPostgres.verifyAvailableUsername('fathony')).rejects.toThrowError(InvariantError);
     });
  
     it('should not throw InvariantError when username available', async () => {
@@ -38,9 +38,9 @@ describe('UserRepositoryPostgres', () => {
     it('should persist register user', async () => {
       // Arrange
       const registerUser = new RegisterUser({
-        username: 'dicoding',
-        password: 'secret_password',
-        fullname: 'Dicoding Indonesia',
+        username: 'fathony',
+        password: 'secret',
+        fullname: 'Mamang Racing',
       });
       const fakeIdGenerator = () => '123'; // stub!
       const userRepositoryPostgres = new UserRepositoryPostgres(pool, fakeIdGenerator);

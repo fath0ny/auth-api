@@ -3,6 +3,7 @@ import NewComment from '../../../Domains/comments/entities/NewComment.js';
 import AddedComment from '../../../Domains/comments/entities/AddedComment.js';
 import CommentRepository from '../../../Domains/comments/CommentRepository.js';
 import ThreadRepository from '../../../Domains/threads/ThreadRepository.js';
+import NotFoundError from '../../../Commons/exceptions/NotFoundError.js';
 import AddCommentUseCase from '../AddCommentUseCase.js';
 
 describe('AddCommentUseCase', () => {
@@ -42,5 +43,35 @@ describe('AddCommentUseCase', () => {
     expect(addedComment).toStrictEqual(mockAddedComment);
     expect(mockThreadRepository.verifyThreadExists).toBeCalledWith(useCasePayload.threadId);
     expect(mockCommentRepository.addComment).toBeCalledWith(new NewComment(useCasePayload));
+  });
+
+  it('should not add comment when thread is not found', async () => {
+    // Arrange
+    const useCasePayload = {
+      content: 'sebuah comment',
+      owner: 'user-123',
+      threadId: 'thread-xxx',
+    };
+
+    /** creating dependency of use case */
+    const mockCommentRepository = new CommentRepository();
+    const mockThreadRepository = new ThreadRepository();
+
+    /** mocking needed function */
+    mockThreadRepository.verifyThreadExists = vi.fn()
+      .mockImplementation(() => Promise.reject(new NotFoundError('thread tidak ditemukan')));
+    mockCommentRepository.addComment = vi.fn();
+
+    /** creating use case instance */
+    const addCommentUseCase = new AddCommentUseCase({
+      commentRepository: mockCommentRepository,
+      threadRepository: mockThreadRepository,
+    });
+
+    // Action and Assert
+    await expect(addCommentUseCase.execute(useCasePayload))
+      .rejects.toThrow(NotFoundError);
+    expect(mockThreadRepository.verifyThreadExists).toBeCalledWith(useCasePayload.threadId);
+    expect(mockCommentRepository.addComment).not.toBeCalled();
   });
 });

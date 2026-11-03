@@ -4,6 +4,7 @@ import pool from '../../database/postgres/pool.js';
 import UsersTableTestHelper from '../../../../tests/UsersTableTestHelper.js';
 import ThreadsTableTestHelper from '../../../../tests/ThreadsTableTestHelper.js';
 import CommentsTableTestHelper from '../../../../tests/CommentsTableTestHelper.js';
+import RepliesTableTestHelper from '../../../../tests/RepliesTableTestHelper.js';
 import container from '../../container.js';
 import createServer from '../createServer.js';
 import { describe, expect, it, afterEach, afterAll } from 'vitest';
@@ -14,6 +15,7 @@ describe('/threads endpoint', () => {
   });
 
   afterEach(async () => {
+    await RepliesTableTestHelper.cleanTable();
     await CommentsTableTestHelper.cleanTable();
     await ThreadsTableTestHelper.cleanTable();
     await UsersTableTestHelper.cleanTable();
@@ -85,6 +87,26 @@ describe('/threads endpoint', () => {
       expect(response.status).toEqual(401);
       expect(response.body.status).toEqual('fail');
     });
+
+    it('should response 401 when access token is invalid', async () => {
+      // Arrange
+      const requestPayload = {
+        title: 'sebuah thread',
+        body: 'sebuah body thread',
+      };
+      const server = await createServer(container);
+
+      // Action
+      const response = await request(server)
+        .post('/threads')
+        .set('Authorization', 'Bearer invalid-token')
+        .send(requestPayload);
+
+      // Assert
+      expect(response.status).toEqual(401);
+      expect(response.body.status).toEqual('fail');
+      expect(response.body.message).toBeDefined();
+    });
   });
 
   describe('when GET /threads/{threadId}', () => {
@@ -93,6 +115,8 @@ describe('/threads endpoint', () => {
       const threadDate = new Date('2021-08-08T07:19:09.775Z');
       const firstCommentDate = new Date('2021-08-08T07:22:33.555Z');
       const secondCommentDate = new Date('2021-08-08T07:26:21.338Z');
+      const firstReplyDate = new Date('2021-08-08T07:59:48.766Z');
+      const secondReplyDate = new Date('2021-08-08T08:07:01.522Z');
       await UsersTableTestHelper.addUser({ id: 'user-123', username: 'dicoding' });
       await UsersTableTestHelper.addUser({ id: 'user-456', username: 'johndoe' });
       await ThreadsTableTestHelper.addThread({
@@ -117,6 +141,21 @@ describe('/threads endpoint', () => {
         threadId: 'thread-123',
         createdAt: firstCommentDate,
       });
+      await RepliesTableTestHelper.addReply({
+        id: 'reply-456',
+        content: 'sebuah balasan',
+        owner: 'user-123',
+        commentId: 'comment-123',
+        createdAt: secondReplyDate,
+      });
+      await RepliesTableTestHelper.addReply({
+        id: 'reply-123',
+        content: 'balasan yang dihapus',
+        owner: 'user-456',
+        commentId: 'comment-123',
+        isDelete: true,
+        createdAt: firstReplyDate,
+      });
       const server = await createServer(container);
 
       // Action
@@ -140,12 +179,27 @@ describe('/threads endpoint', () => {
                 username: 'johndoe',
                 date: firstCommentDate.toISOString(),
                 content: 'sebuah comment',
+                replies: [
+                  {
+                    id: 'reply-123',
+                    content: '**balasan telah dihapus**',
+                    date: firstReplyDate.toISOString(),
+                    username: 'johndoe',
+                  },
+                  {
+                    id: 'reply-456',
+                    content: 'sebuah balasan',
+                    date: secondReplyDate.toISOString(),
+                    username: 'dicoding',
+                  },
+                ],
               },
               {
                 id: 'comment-456',
                 username: 'dicoding',
                 date: secondCommentDate.toISOString(),
                 content: '**komentar telah dihapus**',
+                replies: [],
               },
             ],
           },
