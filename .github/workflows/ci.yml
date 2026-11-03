@@ -50,7 +50,7 @@ jobs:
           PGPORT: 5432
           PGUSER: postgres
           PGPASSWORD: password
-          PGDATABASE: authapi_test
+          PGDATABASE: authapi
           ACCESS_TOKEN_KEY: secret
           REFRESH_TOKEN_KEY: terces
           ACCESS_TOKEN_AGE: 3600
