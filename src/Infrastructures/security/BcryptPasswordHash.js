@@ -10,6 +10,10 @@ class BcryptPasswordHash extends PasswordHash {
   async hash(password) {
     return this._bcrypt.hash(password, this._saltround);
   }
+
+  async compare(password, encryptedPassword) {
+    return this._bcrypt.compare(password, encryptedPassword);
+  }
 }
 
 export default BcryptPasswordHash;

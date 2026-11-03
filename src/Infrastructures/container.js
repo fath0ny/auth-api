@@ -5,12 +5,17 @@ import { createContainer } from 'instances-container';
 // external agency 
 import { nanoid } from 'nanoid';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import pool from './database/postgres/pool.js';
  
 // service (repository, helper, manager, etc)
 import UserRepository from '../Domains/users/UserRepository.js';
 import UserRepositoryPostgres from './repositories/UserRepositoryPostgres.js';
 import BcryptPasswordHash from './security/BcryptPasswordHash.js';
+import AuthenticationRepository from '../Domains/authentications/AuthenticationRepository.js';
+import AuthenticationRepositoryPostgres from './repositories/AuthenticationRepositoryPostgres.js';
+import AuthenticationTokenManager from '../Applications/security/AuthenticationTokenManager.js';
+import JwtTokenManager from './security/JwtTokenManager.js';
 import ThreadRepository from '../Domains/threads/ThreadRepository.js';
 import ThreadRepositoryPostgres from './repositories/ThreadRepositoryPostgres.js';
 import CommentRepository from '../Domains/comments/CommentRepository.js';
@@ -20,6 +25,9 @@ import ReplyRepositoryPostgres from './repositories/ReplyRepositoryPostgres.js';
  
 // use case
 import AddUserUseCase from '../Applications/use_case/AddUserUseCase.js';
+import LoginUserUseCase from '../Applications/use_case/LoginUserUseCase.js';
+import LogoutUserUseCase from '../Applications/use_case/LogoutUserUseCase.js';
+import RefreshAuthenticationUseCase from '../Applications/use_case/RefreshAuthenticationUseCase.js';
 import PasswordHash from '../Applications/security/PasswordHash.js';
 import AddThreadUseCase from '../Applications/use_case/AddThreadUseCase.js';
 import AddCommentUseCase from '../Applications/use_case/AddCommentUseCase.js';
@@ -54,6 +62,28 @@ container.register([
       dependencies: [
         {
           concrete: bcrypt,
+        },
+      ],
+    },
+  },
+  {
+    key: AuthenticationRepository.name,
+    Class: AuthenticationRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+      ],
+    },
+  },
+  {
+    key: AuthenticationTokenManager.name,
+    Class: JwtTokenManager,
+    parameter: {
+      dependencies: [
+        {
+          concrete: jwt,
         },
       ],
     },
@@ -117,6 +147,61 @@ container.register([
         {
           name: 'passwordHash',
           internal: PasswordHash.name,
+        },
+      ],
+    },
+  },
+  {
+    key: LoginUserUseCase.name,
+    Class: LoginUserUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'userRepository',
+          internal: UserRepository.name,
+        },
+        {
+          name: 'authenticationRepository',
+          internal: AuthenticationRepository.name,
+        },
+        {
+          name: 'authenticationTokenManager',
+          internal: AuthenticationTokenManager.name,
+        },
+        {
+          name: 'passwordHash',
+          internal: PasswordHash.name,
+        },
+      ],
+    },
+  },
+  {
+    key: LogoutUserUseCase.name,
+    Class: LogoutUserUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'authenticationRepository',
+          internal: AuthenticationRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: RefreshAuthenticationUseCase.name,
+    Class: RefreshAuthenticationUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'authenticationRepository',
+          internal: AuthenticationRepository.name,
+        },
+        {
+          name: 'authenticationTokenManager',
+          internal: AuthenticationTokenManager.name,
         },
       ],
     },
