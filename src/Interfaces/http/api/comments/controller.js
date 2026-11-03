@@ -1,10 +1,12 @@
 import AddCommentUseCase from '../../../../Applications/use_case/AddCommentUseCase.js';
+import DeleteCommentUseCase from '../../../../Applications/use_case/DeleteCommentUseCase.js';
 import DomainErrorTranslator from '../../../../Commons/exceptions/DomainErrorTranslator.js';
 
 class CommentsController {
   constructor(container) {
     this._container = container;
     this.postComment = this.postComment.bind(this);
+    this.deleteComment = this.deleteComment.bind(this);
   }
 
   async postComment(req, res, next) {
@@ -17,6 +19,25 @@ class CommentsController {
       res.status(201).json({
         status: 'success',
         data: { addedComment },
+      });
+    } catch (error) {
+      const translated = DomainErrorTranslator.translate(error);
+      return res.status(translated.statusCode).json({
+        status: 'fail',
+        message: translated.message,
+      });
+    }
+  }
+
+  async deleteComment(req, res, next) {
+    try {
+      const { id: owner } = req.user;
+      const { threadId, commentId } = req.params;
+      const deleteCommentUseCase = this._container.getInstance(DeleteCommentUseCase.name);
+      await deleteCommentUseCase.execute({ threadId, commentId, owner });
+
+      res.status(200).json({
+        status: 'success',
       });
     } catch (error) {
       const translated = DomainErrorTranslator.translate(error);

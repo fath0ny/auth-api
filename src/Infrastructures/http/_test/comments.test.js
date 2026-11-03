@@ -19,9 +19,9 @@ describe('/threads/{threadId}/comments endpoint', () => {
     await UsersTableTestHelper.cleanTable();
   });
 
-  const getAccessToken = async () => {
-    await UsersTableTestHelper.addUser({ id: 'user-123', username: 'dicoding' });
-    return jwt.sign({ id: 'user-123', username: 'dicoding' }, process.env.ACCESS_TOKEN_KEY);
+  const getAccessToken = async ({ id = 'user-123', username = 'dicoding' } = {}) => {
+    await UsersTableTestHelper.addUser({ id, username });
+    return jwt.sign({ id, username }, process.env.ACCESS_TOKEN_KEY);
   };
 
   describe('when POST /threads/{threadId}/comments', () => {
@@ -98,6 +98,132 @@ describe('/threads/{threadId}/comments endpoint', () => {
       const response = await request(server)
         .post('/threads/thread-123/comments')
         .send(requestPayload);
+
+      // Assert
+      expect(response.status).toEqual(401);
+      expect(response.body.status).toEqual('fail');
+    });
+  });
+
+  describe('when DELETE /threads/{threadId}/comments/{commentId}', () => {
+    it('should response 200 and soft delete comment', async () => {
+      // Arrange
+      const accessToken = await getAccessToken();
+      await ThreadsTableTestHelper.addThread({ id: 'thread-123', owner: 'user-123' });
+      await CommentsTableTestHelper.addComment({
+        id: 'comment-123',
+        owner: 'user-123',
+        threadId: 'thread-123',
+      });
+      const server = await createServer(container);
+
+      // Action
+      const response = await request(server)
+        .delete('/threads/thread-123/comments/comment-123')
+        .set('Authorization', `Bearer ${accessToken}`);
+
+      // Assert
+      expect(response.status).toEqual(200);
+      expect(response.body).toStrictEqual({ status: 'success' });
+
+      const comments = await CommentsTableTestHelper.findCommentsById('comment-123');
+      expect(comments).toHaveLength(1);
+      expect(comments[0].is_delete).toEqual(true);
+    });
+
+    it('should response 403 when user is not the comment owner', async () => {
+      // Arrange
+      const ownerAccessToken = await getAccessToken({ id: 'user-456', username: 'owner' });
+      const accessToken = await getAccessToken();
+      await ThreadsTableTestHelper.addThread({ id: 'thread-123', owner: 'user-456' });
+      await CommentsTableTestHelper.addComment({
+        id: 'comment-123',
+        owner: 'user-456',
+        threadId: 'thread-123',
+      });
+      const server = await createServer(container);
+
+      // Action
+      const response = await request(server)
+        .delete('/threads/thread-123/comments/comment-123')
+        .set('Authorization', `Bearer ${accessToken}`);
+
+      // Assert
+      expect(ownerAccessToken).toBeDefined();
+      expect(response.status).toEqual(403);
+      expect(response.body.status).toEqual('fail');
+      expect(response.body.message).toBeDefined();
+    });
+
+    it('should response 404 when thread does not exist', async () => {
+      // Arrange
+      const accessToken = await getAccessToken();
+      await ThreadsTableTestHelper.addThread({ id: 'thread-123', owner: 'user-123' });
+      await CommentsTableTestHelper.addComment({
+        id: 'comment-123',
+        owner: 'user-123',
+        threadId: 'thread-123',
+      });
+      const server = await createServer(container);
+
+      // Action
+      const response = await request(server)
+        .delete('/threads/thread-xxx/comments/comment-123')
+        .set('Authorization', `Bearer ${accessToken}`);
+
+      // Assert
+      expect(response.status).toEqual(404);
+      expect(response.body.status).toEqual('fail');
+      expect(response.body.message).toBeDefined();
+    });
+
+    it('should response 404 when comment does not exist', async () => {
+      // Arrange
+      const accessToken = await getAccessToken();
+      await ThreadsTableTestHelper.addThread({ id: 'thread-123', owner: 'user-123' });
+      const server = await createServer(container);
+
+      // Action
+      const response = await request(server)
+        .delete('/threads/thread-123/comments/comment-xxx')
+        .set('Authorization', `Bearer ${accessToken}`);
+
+      // Assert
+      expect(response.status).toEqual(404);
+      expect(response.body.status).toEqual('fail');
+      expect(response.body.message).toBeDefined();
+    });
+
+    it('should response 404 when comment does not belong to the thread', async () => {
+      // Arrange
+      const accessToken = await getAccessToken();
+      await ThreadsTableTestHelper.addThread({ id: 'thread-123', owner: 'user-123' });
+      await ThreadsTableTestHelper.addThread({ id: 'thread-456', owner: 'user-123' });
+      await CommentsTableTestHelper.addComment({
+        id: 'comment-123',
+        owner: 'user-123',
+        threadId: 'thread-123',
+      });
+      const server = await createServer(container);
+
+      // Action
+      const response = await request(server)
+        .delete('/threads/thread-456/comments/comment-123')
+        .set('Authorization', `Bearer ${accessToken}`);
+
+      // Assert
+      expect(response.status).toEqual(404);
+      expect(response.body.status).toEqual('fail');
+      expect(response.body.message).toBeDefined();
+    });
+
+    it('should response 401 when request does not contain access token', async () => {
+      // Arrange
+      const server = await createServer(container);
+
+      // Action
+      const response = await request(server)
+        .delete('/threads/thread-123/comments/comment-123');
 
       // Assert
       expect(response.status).toEqual(401);

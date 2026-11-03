@@ -7,6 +7,7 @@ const routes = (controller) => {
   const router = express.Router({ mergeParams: true });
 
   router.post('/', authenticate, controller.postComment);
+  router.delete('/:commentId', authenticate, controller.deleteComment);
 
   return router;
 };
