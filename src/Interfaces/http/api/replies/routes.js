@@ -8,6 +8,7 @@ const routes = (controller) => {
   const router = express.Router({ mergeParams: true });
 
   router.post('/', authenticate, controller.postReply);
+  router.delete('/:replyId', authenticate, controller.deleteReply);
 
   return router;
 };

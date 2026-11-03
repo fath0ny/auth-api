@@ -1,5 +1,7 @@
 import AddedReply from '../../Domains/replies/entities/AddedReply.js';
 import ReplyRepository from '../../Domains/replies/ReplyRepository.js';
+import AuthorizationError from '../../Commons/exceptions/AuthorizationError.js';
+import NotFoundError from '../../Commons/exceptions/NotFoundError.js';
 
 class ReplyRepositoryPostgres extends ReplyRepository {
   constructor(pool, idGenerator) {
@@ -36,6 +38,45 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     const result = await this._pool.query(query);
 
     return result.rows;
+  }
+
+  async verifyReplyExists(replyId, commentId) {
+    const query = {
+      text: 'SELECT id FROM replies WHERE id = $1 AND comment_id = $2 AND is_delete = FALSE',
+      values: [replyId, commentId],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError('balasan tidak ditemukan');
+    }
+  }
+
+  async verifyReplyOwner(replyId, owner) {
+    const query = {
+      text: 'SELECT owner FROM replies WHERE id = $1 AND is_delete = FALSE',
+      values: [replyId],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError('balasan tidak ditemukan');
+    }
+
+    if (result.rows[0].owner !== owner) {
+      throw new AuthorizationError('anda bukan pemilik balasan');
+    }
+  }
+
+  async deleteReply(replyId) {
+    const query = {
+      text: 'UPDATE replies SET is_delete = TRUE WHERE id = $1',
+      values: [replyId],
+    };
+
+    await this._pool.query(query);
   }
 }
 
