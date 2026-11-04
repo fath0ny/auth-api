@@ -17,6 +17,10 @@ const createServer = async (container) => {
   app.use('/threads/:threadId/comments', comments(container));
   app.use('/threads/:threadId/comments/:commentId/replies', replies(container));
 
+  app.get('/', (req, res) => {
+    res.status(200).json({ data: 'Hello world!' });
+  });
+
   app.use((req, res) => {
     res.status(404).json({
       status: 'fail',
