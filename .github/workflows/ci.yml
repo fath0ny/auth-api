@@ -19,7 +19,7 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
-          POSTGRES_DB: authapi
+          POSTGRES_DB: authapi_test
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -50,7 +50,7 @@ jobs:
           PGPORT: 5432
           PGUSER: postgres
           PGPASSWORD: password
-          PGDATABASE: authapi
+          PGDATABASE: authapi_test
           ACCESS_TOKEN_KEY: secret
           REFRESH_TOKEN_KEY: terces
           ACCESS_TOKEN_AGE: 3600
