@@ -8,6 +8,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
+    environment:
+      name: SECRETS_SSH_AWS_STUDY
  
     steps:
     - name: SSH and deploy app
