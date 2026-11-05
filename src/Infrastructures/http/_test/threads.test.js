@@ -179,6 +179,7 @@ describe('/threads endpoint', () => {
                 username: 'johndoe',
                 date: firstCommentDate.toISOString(),
                 content: 'sebuah comment',
+                likeCount: 0,
                 replies: [
                   {
                     id: 'reply-123',
@@ -199,6 +200,7 @@ describe('/threads endpoint', () => {
                 username: 'fathony',
                 date: secondCommentDate.toISOString(),
                 content: '**komentar telah dihapus**',
+                likeCount: 0,
                 replies: [],
               },
             ],

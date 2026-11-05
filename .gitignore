@@ -2,3 +2,4 @@
 .test.env
 node_modules
 auth-api-webserver.pem
+nginx-config.txt

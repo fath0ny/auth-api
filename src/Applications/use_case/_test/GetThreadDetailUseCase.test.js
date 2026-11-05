@@ -2,6 +2,7 @@ import { vi, describe, expect, it } from 'vitest';
 import CommentRepository from '../../../Domains/comments/CommentRepository.js';
 import ThreadRepository from '../../../Domains/threads/ThreadRepository.js';
 import ReplyRepository from '../../../Domains/replies/ReplyRepository.js';
+import CommentLikeRepository from '../../../Domains/comment_likes/CommentLikeRepository.js';
 import NotFoundError from '../../../Commons/exceptions/NotFoundError.js';
 import GetThreadDetailUseCase from '../GetThreadDetailUseCase.js';
 
@@ -55,34 +56,39 @@ describe('GetThreadDetailUseCase', () => {
         is_delete: false,
       },
     ];
+    const mockLikeCounts = [
+      { comment_id: 'comment-123', like_count: 2 },
+    ];
 
-    /** creating dependency of use case */
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
     const mockReplyRepository = new ReplyRepository();
+    const mockCommentLikeRepository = new CommentLikeRepository();
 
-    /** mocking needed function */
     mockThreadRepository.getThreadById = vi.fn()
       .mockImplementation(() => Promise.resolve(mockThread));
     mockCommentRepository.getCommentsByThreadId = vi.fn()
       .mockImplementation(() => Promise.resolve(mockComments));
     mockReplyRepository.getRepliesByThreadId = vi.fn()
       .mockImplementation(() => Promise.resolve(mockReplies));
+    mockCommentLikeRepository.getLikeCountsByThreadId = vi.fn()
+      .mockImplementation(() => Promise.resolve(mockLikeCounts));
 
-    /** creating use case instance */
     const getThreadDetailUseCase = new GetThreadDetailUseCase({
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
       replyRepository: mockReplyRepository,
+      commentLikeRepository: mockCommentLikeRepository,
     });
 
     // Action
     const thread = await getThreadDetailUseCase.execute(threadId);
 
     // Assert
-    expect(mockThreadRepository.getThreadById).toBeCalledWith(threadId);
-    expect(mockCommentRepository.getCommentsByThreadId).toBeCalledWith(threadId);
-    expect(mockReplyRepository.getRepliesByThreadId).toBeCalledWith(threadId);
+    expect(mockThreadRepository.getThreadById).toHaveBeenCalledWith(threadId);
+    expect(mockCommentRepository.getCommentsByThreadId).toHaveBeenCalledWith(threadId);
+    expect(mockReplyRepository.getRepliesByThreadId).toHaveBeenCalledWith(threadId);
+    expect(mockCommentLikeRepository.getLikeCountsByThreadId).toHaveBeenCalledWith(threadId);
     expect(thread).toStrictEqual({
       ...mockThread,
       comments: [
@@ -91,6 +97,7 @@ describe('GetThreadDetailUseCase', () => {
           username: 'johndoe',
           date: firstCommentDate,
           content: 'sebuah comment',
+          likeCount: 2,
           replies: [
             {
               id: 'reply-123',
@@ -111,39 +118,41 @@ describe('GetThreadDetailUseCase', () => {
           username: 'fathony',
           date: secondCommentDate,
           content: '**komentar telah dihapus**',
+          likeCount: 0,
           replies: [],
         },
       ],
     });
   });
 
-  it('should not get comments and replies when thread is not found', async () => {
+  it('should not get comments, replies, and like counts when thread is not found', async () => {
     // Arrange
     const threadId = 'thread-xxx';
 
-    /** creating dependency of use case */
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
     const mockReplyRepository = new ReplyRepository();
+    const mockCommentLikeRepository = new CommentLikeRepository();
 
-    /** mocking needed function */
     mockThreadRepository.getThreadById = vi.fn()
       .mockImplementation(() => Promise.reject(new NotFoundError('thread tidak ditemukan')));
     mockCommentRepository.getCommentsByThreadId = vi.fn();
     mockReplyRepository.getRepliesByThreadId = vi.fn();
+    mockCommentLikeRepository.getLikeCountsByThreadId = vi.fn();
 
-    /** creating use case instance */
     const getThreadDetailUseCase = new GetThreadDetailUseCase({
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
       replyRepository: mockReplyRepository,
+      commentLikeRepository: mockCommentLikeRepository,
     });
 
     // Action and Assert
     await expect(getThreadDetailUseCase.execute(threadId))
       .rejects.toThrow(NotFoundError);
-    expect(mockThreadRepository.getThreadById).toBeCalledWith(threadId);
-    expect(mockCommentRepository.getCommentsByThreadId).not.toBeCalled();
-    expect(mockReplyRepository.getRepliesByThreadId).not.toBeCalled();
+    expect(mockThreadRepository.getThreadById).toHaveBeenCalledWith(threadId);
+    expect(mockCommentRepository.getCommentsByThreadId).not.toHaveBeenCalled();
+    expect(mockReplyRepository.getRepliesByThreadId).not.toHaveBeenCalled();
+    expect(mockCommentLikeRepository.getLikeCountsByThreadId).not.toHaveBeenCalled();
   });
 });
