@@ -2,16 +2,20 @@ const DELETED_COMMENT_CONTENT = '**komentar telah dihapus**';
 const DELETED_REPLY_CONTENT = '**balasan telah dihapus**';
 
 class GetThreadDetailUseCase {
-  constructor({ threadRepository, commentRepository, replyRepository }) {
+  constructor({
+    threadRepository, commentRepository, replyRepository, commentLikeRepository,
+  }) {
     this._threadRepository = threadRepository;
     this._commentRepository = commentRepository;
     this._replyRepository = replyRepository;
+    this._commentLikeRepository = commentLikeRepository;
   }
 
   async execute(threadId) {
     const thread = await this._threadRepository.getThreadById(threadId);
     const comments = await this._commentRepository.getCommentsByThreadId(threadId);
     const replies = await this._replyRepository.getRepliesByThreadId(threadId);
+    const likeCounts = await this._commentLikeRepository.getLikeCountsByThreadId(threadId);
 
     const repliesByCommentId = replies.reduce((grouped, reply) => {
       if (!grouped[reply.comment_id]) {
@@ -28,6 +32,11 @@ class GetThreadDetailUseCase {
       return grouped;
     }, {});
 
+    const likeCountByCommentId = likeCounts.reduce((grouped, { comment_id: commentId, like_count: likeCount }) => {
+      grouped[commentId] = Number(likeCount);
+      return grouped;
+    }, {});
+
     return {
       ...thread,
       comments: comments.map((comment) => ({
@@ -35,6 +44,7 @@ class GetThreadDetailUseCase {
         username: comment.username,
         date: comment.date,
         content: comment.is_delete ? DELETED_COMMENT_CONTENT : comment.content,
+        likeCount: likeCountByCommentId[comment.id] || 0,
         replies: repliesByCommentId[comment.id] || [],
       })),
     };
