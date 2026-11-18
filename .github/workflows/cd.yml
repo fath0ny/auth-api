@@ -21,11 +21,13 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         port: ${{ secrets.SSH_PORT }}
         script: |
+          set -e
           export NVM_DIR="$HOME/.nvm"
-          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # Load nvm
-          [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # Load nvm bash_completion
-          cd ~/auth-api
-          git pull origin master
-          npm ci --omit=dev --no-audit --no-fund
-          npm run migrate up
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"          
+          [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"   
+          cd ~/auth-api 
+          git pull origin master   
+          npm ci --no-audit --no-fund         
+          npm run migrate up       
+          npm prune --omit=dev     
           pm2 restart auth-api || pm2 start src/app.js --name auth-api
